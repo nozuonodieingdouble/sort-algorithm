@@ -1,0 +1,59 @@
+void Marge(int* a, int* tmp, int left, int mid, int right)  
+{  
+    int begin1 = left, end1 = mid;  
+    int begin2 = mid + 1, end2 = right;  
+  
+    int index = left;  
+    while (begin1 <= end1 && begin2 <= end2)//进行归并排序并放到tmp中  
+    {  
+        if (a[begin1] < a[begin2])  
+            tmp[index++] = a[begin1++];  
+        else  
+            tmp[index++] = a[begin2++];  
+    }  
+  
+    //归并时必定有一个数组没有放完，需要进行判断，并将其放到tmp中  
+  
+    while (begin1 <= end1)  
+    {  
+        tmp[index++] = a[begin1++];  
+    }  
+    while (begin2 <= end2)  
+    {  
+        tmp[index++] = a[begin2++];  
+    }  
+  
+    for (size_t i = 0; i < index; ++i)  
+    {  
+        a[i] = tmp[i];  
+    }  
+}  
+  
+void _MergeSort(int* a, int* tmp, int left, int right)  
+{  
+    if (left >= right)//如果只有一个元素或者没有元素时直接返回  
+        return;  
+  
+    int mid = left + ((right - left) >> 1);  
+  
+    //递归归并左右区间  
+    _MergeSort(a, tmp, left, mid);  
+    _MergeSort(a, tmp, mid + 1, right);  
+  
+    Marge(a, tmp, left, mid, right);  
+}  
+  
+void MergeSort(int* a, size_t n)//归并排序  
+{  
+    assert(a);  
+    int* tmp = new int[n];//创建辅助数组用来存放归并时的结果  
+    _MergeSort(a, tmp, 0, n - 1);//调用归并进行排序  
+    delete[] tmp;  
+}  
+  
+void TestMergeSort()  
+{  
+    int arr[10] = { 2, 5, 4, 9, 3, 6, 8, 7, 1, 0 };  
+    MergeSort(arr, sizeof(arr) / sizeof(arr[0]));  
+    Print(arr, sizeof(arr) / sizeof(arr[0]));  
+}
