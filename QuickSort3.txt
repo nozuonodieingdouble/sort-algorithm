@@ -1,0 +1,35 @@
+template<class T>  
+int PartSort(T* arr, int left, int right)  
+{  
+    int key = arr[right];  
+    int cur = left;  
+    int prev = cur - 1;  
+    while (cur != right)  
+    {  
+        if (arr[cur] < key && ++prev != cur)  
+        {  
+            swap(arr[cur], arr[prev]);  
+        }  
+        ++cur;  
+    }  
+    swap(arr[++prev], arr[cur]);  
+    return prev;  
+}  
+  
+void QuickSort(int* arr, int left, int right)  
+{  
+    assert(arr);  
+    if (left < right)  
+    {  
+        int div = PartSort(arr, left, right);  
+        QuickSort(arr, left, div - 1);  
+        QuickSort(arr, div + 1, right);  
+    }  
+}  
+  
+void TestQuickSort()  
+{  
+    int arr[10] = { 2, 0, 4, 9, 3, 6, 8, 7, 1, 5 };  
+    QuickSort(arr, 0, sizeof(arr) / sizeof(arr[0]) - 1);  
+    Print<int>(arr, sizeof(arr) / sizeof(arr[0]));  
+}
