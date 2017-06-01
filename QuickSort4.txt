@@ -1,0 +1,94 @@
+int GetMidIndex(int * a, int left, int right) //优化的三数取中  
+{  
+    int mid = left + ((right - left) >> 1);  
+    //left  mid  right  
+    if (a[left] < a[mid])  
+    {  
+        if (a[mid] < a[left])  
+            return mid;  
+        else if (a[left]>a[right])   //mid>right  
+            return left;  
+        else  
+            return right;  
+    }  
+    else    //left>mid  
+    {  
+        if (a[mid] > a[right])  
+        {  
+            return mid;  
+        }  
+        else if (a[left] < a[right])  
+        {  
+            return left;  
+        }  
+        else  
+        {  
+            return right;  
+        }  
+    }  
+}  
+  
+template<class T>  
+void InsertSort(T* arr, size_t n)       //插入排序  
+{  
+    assert(arr);  
+    for (size_t i = 1; i < n; ++i)  
+    {  
+        int end = i - 1;    //end用来保存有序区间的最后一个数据的位置  
+        T tmp = arr[i];     //temp用来保存无序区间的第一个数据，也是即将要插入有序区间的数据  
+  
+        while (end >= 0)  
+        {  
+            if (tmp < arr[end])  
+            {  
+                arr[end + 1] = arr[end];        //为temp[i]留出合适的位置  
+                end--;  
+            }  
+            else  
+                break;  
+        }  
+        arr[end+1] = tmp;       //将temp插入到合适的位置  
+    }  
+}  
+  
+template<class T>  
+int PartSort(T* arr, int left, int right)  
+{  
+    int ret = GetMidIndex(arr,left,right);  
+    swap(arr[ret], arr[right]);  
+    int key = arr[right];  
+    while (left < right)  
+    {  
+        while (left < right && arr[left] <= key)  
+        {  
+            ++left;  
+        }  
+        swap(arr[right], arr[left]);  
+        //arr[right] = arr[left];  
+        while (left < right && arr[right] >= key)  
+        {  
+            --right;  
+        }  
+        if (arr[left] != arr[right])  
+        {  
+            swap(arr[left], arr[right]);  
+        }  
+    }  
+    arr[left] = key;  
+    return left;  
+}  
+  
+void QuickSort(int* arr, int left, int right)  
+{  
+    assert(arr);  
+    if (left < right)  
+    {  
+        if (right - left < 3)    //便于测试选取的区间比较小  
+        {  
+            InsertSort(arr, right - left);      //直接调用插入排序  
+        }  
+        int div = PartSort(arr, left, right);  
+        QuickSort(arr, left, div - 1);  
+        QuickSort(arr, div + 1, right);  
+    }  
+}
