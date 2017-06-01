@@ -1,0 +1,25 @@
+#include<stack>  
+void QuickSortNonR(int* arr,int left,int right)  
+{  
+    stack<int> s;  
+    s.push(right);  
+    s.push(left);  
+    while (!s.empty())  
+    {  
+        int begin = s.top();  
+        s.pop();  
+        int end = s.top();  
+        s.pop();  
+        int div = PartSort(arr, left, right);  
+        if (begin < div - 1)  
+        {  
+            s.push(div-1);  
+            s.push(begin);  
+        }  
+        if (div + 1 < end)  
+        {  
+            s.push(end);  
+            s.push(div + 1);  
+        }  
+    }  
+}
