@@ -1,0 +1,27 @@
+void CountSort(int* arr, size_t n)  
+{  
+    assert(arr);  
+    int max = 0;  
+    for (size_t i = 0; i < n; i++)  
+    {  
+        if (arr[i]>max)  
+            max = arr[i];  
+    }  
+    //计数数组  
+    int* tmp = new int[max + 1];  
+    memset(arr, 0, sizeof(int)*(max + 1));  
+    for (size_t i = 0; i < n; i++)  
+    {  
+        tmp[arr[i]]++;  
+    }  
+    int index = 0;  
+    for (size_t i = 0; i <= max; i++)  
+    {  
+        while (tmp[i]--)  
+        {  
+            arr[index] = i;  
+            ++index;  
+        }  
+    }  
+    delete[] tmp;  
+}
