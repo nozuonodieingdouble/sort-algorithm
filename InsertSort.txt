@@ -1,0 +1,63 @@
+#include<assert.h>  
+using namespace std;  
+  
+template<class T>  
+void Print(const T* a, size_t n)  
+{  
+    for (size_t i = 0; i < n; ++i)  
+    {  
+        cout << a[i] << " ";  
+    }  
+    cout << endl;  
+}  
+  
+template<class T>  
+struct Less     //升序  
+{  
+    bool operator()(const T& l, const T& r)  
+    {  
+        return l < r;  
+    }  
+};  
+  
+template <class T>  
+struct Great    //降序  
+{  
+    bool operator()(const T& l, const T& r)  
+    {  
+        return l > r;  
+    }  
+};  
+  
+template<class T,class Compare>  
+void InsertSort(T* a, size_t n)     //插入排序  
+{  
+    assert(a);  
+    for (size_t i = 1; i < n; ++i)  
+    {  
+        int end = i - 1;    //end用来保存有序区间的最后一个数据的位置  
+        T temp = a[i];      //temp用来保存无序区间的第一个数据，也是即将要插入有序区间的数据  
+  
+        while (end >= 0)  
+        {  
+            if (Compare()(temp, a[end]))    //利用仿函数实现比较  
+            {  
+                a[end + 1] = a[end];        //为temp[i]留出合适的位置  
+                end--;  
+            }  
+            else  
+                break;  
+        }  
+        a[end+1] = temp;        //将temp插入到合适的位置  
+    }  
+}  
+  
+  
+void TestInsertSort()  
+{  
+    int a[] = { 3, 5, 7, 2, 4, 1, 9, 8, 6 };  
+    InsertSort<int, Less<int>>(a, sizeof(a) / sizeof(a[0]));//升序  
+    Print(a, sizeof(a) / sizeof(a[0]));  
+    InsertSort<int, Great<int>>(a, sizeof(a) / sizeof(a[0]));//降序  
+    Print(a, sizeof(a) / sizeof(a[0]));  
+}  
