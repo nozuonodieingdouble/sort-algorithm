@@ -1,0 +1,36 @@
+template<class T,class Compare>  
+void ShellSort(T* a,size_t n)  
+{  
+    assert(a);  
+    int gap = n;  
+    while (gap > 1)  
+    {  
+        gap = gap / 3 + 1;  //+1是为了最后一次对全体数据进行插入排序  
+        for (size_t i = gap; i < n; i++)  
+        {  
+            int end = i - gap;  
+            T tmp = a[i];  
+  
+            while (end >= 0)  
+            {  
+                if (Compare()(tmp, a[end]))  
+                {  
+                    a[end + gap] = a[end];  
+                    end = end - gap;  
+                }  
+                else  
+                    break;  
+            }  
+            a[end + gap] = tmp;  
+        }  
+    }  
+}  
+  
+void TestShellSort()  
+{  
+    int a[] = { 2, 5, 4, 9, 3, 6, 8, 7, 1, 0 };  
+    ShellSort<int, Less<int>>(a, sizeof(a) / sizeof(a[0]));  
+    Print(a, sizeof(a) / sizeof(a[0]));  
+    ShellSort<int, Great<int>>(a, sizeof(a) / sizeof(a[0]));  
+    Print(a, sizeof(a) / sizeof(a[0]));  
+}  
