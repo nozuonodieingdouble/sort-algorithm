@@ -1,0 +1,32 @@
+template<class T,class Compare>  
+void SelectSort(T* a, size_t n)  
+{  
+    assert(a);  
+    for (size_t i = 1; i < n; ++i)  
+    {  
+        int minIndex = i;   //未排序区间的最小数据下标  
+        int start = i - 1;  //未排序区间的第一个数据下标  
+  
+        //选出第二部分最小数据  
+        for (size_t j = i + 1; j < n - 1; ++j)   //用i+1来不断的缩小j的范围  
+        {  
+            if (Compare()(a[j + 1], a[minIndex]))  
+                swap(a[j + 1], a[minIndex]);  
+            else  
+                break;  
+        }  
+  
+        //第二部分最小数据和第三部第一个数据进行比较  
+        if (Compare()(a[minIndex], a[start]))  
+            swap(a[minIndex], a[start]);  
+    }  
+}  
+  
+void TestSelectSort()  
+{  
+    int a[] = { 2, 5, 4, 9, 3, 6, 8, 7, 1, 0 };  
+    SelectSort<int, Less<int>>(a, sizeof(a) / sizeof(a[0]));  
+    Print(a, sizeof(a) / sizeof(a[0]));  
+    SelectSort<int, Great<int>>(a, sizeof(a) / sizeof(a[0]));  
+    Print(a, sizeof(a) / sizeof(a[0]));  
+}
